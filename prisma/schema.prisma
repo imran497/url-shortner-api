@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             String      @id
+  email          String      @unique
+  passwordHash   String
+  firstName      String
+  lastName       String
+  signupPlatform String      @default("email")
+  isPro          Boolean     @default(false)
+  planID         String?
+  lastLoggedIn   DateTime    @default(now())
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  shortLinks     ShortLink[]
+}
+
+model ShortLink {
+  id              String   @id
+  title           String
+  shortLinkDomain String
+  shortPath       String   @unique
+  destinationUrl  String
+  isCustomDomain  Boolean  @default(false)
+  isCustomPath    Boolean  @default(false)
+  status          String   @default("active")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

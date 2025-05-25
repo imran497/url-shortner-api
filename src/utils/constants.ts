@@ -1,0 +1,1 @@
+export const DEFAULT_SHORT_LINK_DOMAIN = 'buo.to';
