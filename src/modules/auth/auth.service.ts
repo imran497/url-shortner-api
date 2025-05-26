@@ -9,6 +9,7 @@ import { SignUpDTO } from '@/modules/auth/dto/signup.dto';
 import { plainToInstance } from 'class-transformer';
 import { UserResDTO } from './dto/user.dto';
 import { generateId } from '@/utils/id-generator';
+import { formatResponse } from '@/utils/formatResponse';
 
 @Injectable()
 export class AuthService {
@@ -64,11 +65,9 @@ export class AuthService {
     });
 
     const tkn = await this.signToken(user.id, user.email);
-    return {
-      statusCode: 200,
-      data: plainToInstance(UserResDTO, user),
-      tkn,
-    };
+
+    return formatResponse(plainToInstance(UserResDTO, user), 200, { tkn });
+    
     } catch (error) {
       throw error;
     }

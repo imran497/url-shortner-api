@@ -4,6 +4,7 @@ import { generateId } from '@/utils/id-generator';
 import { GuestLinkPayloadDTO } from '@/modules/links/dto/GuestLink.dto';
 import { generateSlug } from '@/utils/generateSlug';
 import { DEFAULT_SHORT_LINK_DOMAIN } from '@/utils/constants';
+import { formatResponse } from '@/utils/formatResponse';
 
 @Injectable()
 export class LinksService {
@@ -47,12 +48,13 @@ export class LinksService {
         }
       });
 
-      return {
+      return formatResponse({
         shortUrl: `https://${shortLink.shortLinkDomain}/${shortLink.shortPath}`,
         destinationUrl: shortLink.destinationUrl,
         title: shortLink.title,
         createdAt: shortLink.createdAt
-      };
+      }, 200);
+
     } catch (error) {
       if (error.code === 'P2002') {
         throw new HttpException('Short path already exists', 400);

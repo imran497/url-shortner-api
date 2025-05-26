@@ -1,1 +1,1 @@
-export const DEFAULT_SHORT_LINK_DOMAIN = 'buo.to';
+export const DEFAULT_SHORT_LINK_DOMAIN = process.env.DEFAULT_SHORT_LINK_DOMAIN ?? 'tst.co';
